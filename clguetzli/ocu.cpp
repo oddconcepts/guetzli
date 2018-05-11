@@ -40,10 +40,22 @@ ocu_args_d_t& getOcu(void)
 
     char* ptx = nullptr;
     size_t src_size = 0;
-if (sizeof(void*) == 8)
-    ReadSourceFromFile("clguetzli/clguetzli.cu.ptx64", &ptx, &src_size);
+    char* prefix = getenv("CONDA_PREFIX");
+
+if (sizeof(void*) == 8) 
+{
+    if (prefix)
+        snprintf(name, 1023, "%s/share/%s", prefix, "clguetzli/clguetzli.cu.ptx64");
+    else
+        snprintf(name, 1023, "%s", "clguetzli/clguetzli.cu.ptx64");
+}
 else
-    ReadSourceFromFile("clguetzli/clguetzli.cu.ptx32", &ptx, &src_size);
+{
+    if (prefix)
+        snprintf(name, 1023, "%s/share/%s", prefix, "clguetzli/clguetzli.cu.ptx32");
+    else
+        snprintf(name, 1023, "%s", "clguetzli/clguetzli.cu.ptx32");
+}
 
     CUmodule mod;
     CUjit_option jit_options[2];
