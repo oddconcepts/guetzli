@@ -10,18 +10,26 @@ endif
 
 ifeq ($(config),release)
   guetzli_static_config = release
+  guetzli_shared_config = release
   guetzli_config = release
 endif
 ifeq ($(config),debug)
   guetzli_static_config = debug
+  guetzli_shared_config = debug
   guetzli_config = debug
 endif
 
-PROJECTS := guetzli_static guetzli
+PROJECTS := guetzli_shared guetzli_static guetzli
 
 .PHONY: all clean help $(PROJECTS) 
 
 all: $(PROJECTS)
+
+guetzli_shared:
+ifneq (,$(guetzli_shared_config))
+	@echo "==== Building guetzli_shared ($(guetzli_shared_config)) ===="
+	@${MAKE} --no-print-directory -C . -f guetzli_shared.make config=$(guetzli_shared_config)
+endif
 
 guetzli_static:
 ifneq (,$(guetzli_static_config))
@@ -37,6 +45,7 @@ endif
 
 clean:
 	@${MAKE} --no-print-directory -C . -f guetzli_static.make clean
+	@${MAKE} --no-print-directory -C . -f guetzli_shared.make clean
 	@${MAKE} --no-print-directory -C . -f guetzli.make clean
 
 help:
