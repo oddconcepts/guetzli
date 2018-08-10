@@ -9,6 +9,8 @@
 #include <cuda.h>
 #include <nvrtc.h>
 
+#include <stdio.h>
+
 ocu_args_d_t& getOcu(void)
 {
     static bool bInit = false;
