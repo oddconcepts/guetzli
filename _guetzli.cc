@@ -68,6 +68,8 @@ PyObject* JpegToJpeg(PyObject* self, PyObject* args) {
     return NULL;
   }
 
+  g_mathMode = MODE_CUDA;
+
   params.butteraugli_target = static_cast<float>(
       guetzli::ButteraugliScoreForQuality(quality));
   
@@ -86,8 +88,6 @@ PyObject* JpegToJpeg(PyObject* self, PyObject* args) {
 #if PY_VERSION_HEX >= 0x03000000
 PyMODINIT_FUNC
 PyInit__guetzli(void) {
-    g_mathMode = MODE_CUDA;
-
     static PyModuleDef module_def = {
         PyModuleDef_HEAD_INIT,
         "_guetzli",         /* m_name */
@@ -102,8 +102,6 @@ PyInit__guetzli(void) {
 PyMODINIT_FUNC
 init_guetzli(void)
 {
-    g_mathMode = MODE_CUDA;
-
     Py_InitModule("_guetzli", methods);
 }
 #endif
