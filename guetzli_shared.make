@@ -15,7 +15,7 @@ ifeq ($(config),release)
   TARGETDIR = bin/Release
   TARGET = $(TARGETDIR)/libguetzli.so
   OBJDIR = obj/Release/guetzli_shared
-  DEFINES +=
+  DEFINES += -D__USE_CUDA__
   INCLUDES += -I. -Ithird_party/butteraugli -Iclguetzli
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
@@ -23,7 +23,7 @@ ifeq ($(config),release)
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -O3 -g -std=c++11 `pkg-config --cflags libpng || libpng-config --cflags` -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
   LIBS +=
-  LDDEPS +=
+  LDDEPS += -lcuda
   ALL_LDFLAGS += $(LDFLAGS) `pkg-config --libs libpng || libpng-config --ldflags`
   LINKCMD = $(CXX) -shared -o "$@" $(OBJECTS) $(ALL_LDFLAGS)
   define PREBUILDCMDS
@@ -42,14 +42,14 @@ ifeq ($(config),debug)
   TARGETDIR = bin/Debug
   TARGET = $(TARGETDIR)/libguetzli.so
   OBJDIR = obj/Debug/guetzli_shared
-  DEFINES +=
+  DEFINES += -D__USE_CUDA__
   INCLUDES += -I. -Ithird_party/butteraugli -Iclguetzli
   FORCE_INCLUDE +=
   ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
   ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -g `pkg-config --cflags libpng || libpng-config --cflags` -fPIC
   ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -g -std=c++11 `pkg-config --cflags libpng || libpng-config --cflags` -fPIC
   ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-  LIBS +=
+  LIBS += -lcuda
   LDDEPS +=
   ALL_LDFLAGS += $(LDFLAGS) `pkg-config --libs libpng || libpng-config --ldflags`
   LINKCMD = $(CXX) -shared -o "$@" $(OBJECTS) $(ALL_LDFLAGS)

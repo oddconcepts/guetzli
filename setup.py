@@ -6,7 +6,7 @@ import os
 
 srcs = ['_guetzli.cc']
 defs = []
-libs = ['guetzli']
+libs = ['guetzli', 'cuda', 'm', 'stdc++']
 
 os.environ["CC"]  = 'gcc'
 
