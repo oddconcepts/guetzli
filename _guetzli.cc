@@ -6,6 +6,8 @@
 #include "guetzli/processor.h"
 #include "guetzli/quality.h"
 
+#include "clguetzli/clguetzli.h"
+
 PyObject* RgbToJpeg(PyObject* self, PyObject* args);
 PyObject* JpegToJpeg(PyObject* self, PyObject* args);
 
@@ -84,9 +86,7 @@ PyObject* JpegToJpeg(PyObject* self, PyObject* args) {
 #if PY_VERSION_HEX >= 0x03000000
 PyMODINIT_FUNC
 PyInit__guetzli(void) {
-#ifdef __USE_CUDA__
     g_mathMode = MODE_CUDA;
-#endif 
 
     static PyModuleDef module_def = {
         PyModuleDef_HEAD_INIT,
@@ -102,11 +102,9 @@ PyInit__guetzli(void) {
 PyMODINIT_FUNC
 init_guetzli(void)
 {
-#ifdef __USE_CUDA__
     g_mathMode = MODE_CUDA;
-#endif 
 
-    Py_InitModule("_guetzli", h26xMethods);
+    Py_InitModule("_guetzli", methods);
 }
 #endif
 
