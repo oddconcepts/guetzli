@@ -59,6 +59,8 @@ ocu_args_d_t& getOcu(void)
             snprintf(name, 1023, "%s", "clguetzli/clguetzli.cu.ptx32");
     }
 
+    ReadSourceFromFile(name, &ptx, &src_size);
+
     CUmodule mod;
     CUjit_option jit_options[2];
     void *jit_optvals[2];
