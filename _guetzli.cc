@@ -84,6 +84,10 @@ PyObject* JpegToJpeg(PyObject* self, PyObject* args) {
 #if PY_VERSION_HEX >= 0x03000000
 PyMODINIT_FUNC
 PyInit__guetzli(void) {
+#ifdef __USE_CUDA__
+    g_mathMode = MODE_CUDA;
+#endif 
+
     static PyModuleDef module_def = {
         PyModuleDef_HEAD_INIT,
         "_guetzli",         /* m_name */
@@ -98,6 +102,10 @@ PyInit__guetzli(void) {
 PyMODINIT_FUNC
 init_guetzli(void)
 {
+#ifdef __USE_CUDA__
+    g_mathMode = MODE_CUDA;
+#endif 
+
     Py_InitModule("_guetzli", h26xMethods);
 }
 #endif
