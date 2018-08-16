@@ -18,6 +18,12 @@ static PyMethodDef methods[] =
     {NULL, NULL}
 };
 
+void TerminateHandler() {
+  fprintf(stderr, "Unhandled exception. Most likely insufficient memory available.\n"
+          "Make sure that there is 300MB/MPix of memory available.\n");
+  exit(1);
+}
+
 PyObject* RgbToJpeg(PyObject* self, PyObject* args) {
   guetzli::Params params;
   guetzli::ProcessStats stats;
@@ -68,8 +74,6 @@ PyObject* JpegToJpeg(PyObject* self, PyObject* args) {
     return NULL;
   }
 
-  g_mathMode = MODE_CUDA;
-
   params.butteraugli_target = static_cast<float>(
       guetzli::ButteraugliScoreForQuality(quality));
   
@@ -88,6 +92,12 @@ PyObject* JpegToJpeg(PyObject* self, PyObject* args) {
 #if PY_VERSION_HEX >= 0x03000000
 PyMODINIT_FUNC
 PyInit__guetzli(void) {
+#ifdef __USE_CUDA__
+    g_mathMode = MODE_CUDA;
+#endif
+
+    std::set_terminate(TerminateHandler);
+
     static PyModuleDef module_def = {
         PyModuleDef_HEAD_INIT,
         "_guetzli",         /* m_name */
@@ -102,6 +112,12 @@ PyInit__guetzli(void) {
 PyMODINIT_FUNC
 init_guetzli(void)
 {
+#ifdef __USE_CUDA__
+    g_mathMode = MODE_CUDA;
+#endif
+
+    std::set_terminate(TerminateHandler);
+
     Py_InitModule("_guetzli", methods);
 }
 #endif

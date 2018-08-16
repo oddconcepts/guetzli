@@ -5,7 +5,7 @@ from distutils.core import setup, Extension
 import os
 
 srcs = ['_guetzli.cc']
-defs = []
+defs = ['__USE_CUDA__']
 libs = ['guetzli']
 
 os.environ["CC"]  = 'gcc'
